@@ -29,7 +29,7 @@ func (u *User) ComparePassword(password string) error {
 // Count ページネーション用関数。データ数を返す。
 func (u *User) Count(db *gorm.DB) int64 {
 	var total int64
-	db.Model(&Product{}).Count(&total)
+	db.Model(&User{}).Count(&total)
 
 	return total
 }

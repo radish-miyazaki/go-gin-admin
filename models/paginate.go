@@ -8,7 +8,7 @@ import (
 
 func Paginate(db *gorm.DB, entity Entity, page int) gin.H {
 	// 1ページあたりのデータ数
-	limit := 15
+	limit := 3
 	// どのテータから取るかのオフセット
 	offset := (page - 1) * limit
 
