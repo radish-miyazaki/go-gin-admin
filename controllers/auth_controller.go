@@ -35,7 +35,12 @@ func Register(c *gin.Context) {
 		RoleID:    1,
 	}
 	u.SetPassword(data["password"])
-	db.DB.Create(&u)
+	if err := db.DB.Create(&u).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err,
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, u)
 }

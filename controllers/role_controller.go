@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/radish-miyazaki/go-admin/db"
 	"github.com/radish-miyazaki/go-admin/models"
 	"gorm.io/gorm"
 	"net/http"
-	"strconv"
 )
 
 func AllRoles(c *gin.Context) {
@@ -34,7 +34,9 @@ func CreateRole(c *gin.Context) {
 	ps := make([]models.Permission, len(list))
 
 	for i, p := range list {
-		id, _ := strconv.Atoi(p.(string))
+		// FIXME: pがfloat64になっている
+		// TODO: idが存在しない場合は、エラーハンドリングする
+		id, _ := p.(float64)
 		ps[i] = models.Permission{
 			ID: uint(id),
 		}
@@ -45,6 +47,8 @@ func CreateRole(c *gin.Context) {
 		Name:        rDTO["name"].(string),
 		Permissions: ps,
 	}
+
+	fmt.Println(r)
 
 	db.DB.Create(&r)
 	c.JSON(http.StatusCreated, r)
@@ -94,7 +98,9 @@ func UpdateRole(c *gin.Context) {
 	// 受け取ったpermissionのidをPermissionインスタンスに変換
 	ps := make([]models.Permission, len(list))
 	for i, p := range list {
-		id, _ := strconv.Atoi(p.(string))
+		// FIXME: pがfloat64になっている
+		// TODO: idが存在しない場合は、エラーハンドリングする
+		id, _ := p.(float64)
 		ps[i] = models.Permission{
 			ID: uint(id),
 		}
